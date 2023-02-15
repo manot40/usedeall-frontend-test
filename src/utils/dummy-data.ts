@@ -6,7 +6,7 @@ import { deepFreeze } from '@/utils';
 let dummyData: DummyData;
 
 (async () => {
-  const baseDir = path.join(__dirname.replace(/(\.next).*/, ''), '/static');
+  const baseDir = path.join(process.cwd().replace(/(\.next).*/, ''), '/static');
 
   const productsPath = path.join(baseDir, 'products.json');
   const cartsPath = path.join(baseDir, 'carts.json');
