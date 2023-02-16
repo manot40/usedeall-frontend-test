@@ -25,7 +25,7 @@ export const getDummyData = <T extends keyof DummyData>(key: T) =>
   new Promise<DummyData[T]>((resolve, reject) => {
     let retry = 0;
     const timer = setInterval(() => {
-      if (retry == 10) reject(new Error('Dummy cannot be loaded!'));
+      if (retry == 10) reject(new Error('Dummy data cannot be loaded!'));
       else if (dummyData) {
         clearInterval(timer);
         resolve(dummyData[key]);

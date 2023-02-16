@@ -1,3 +1,3 @@
-export { deepFreeze } from './deep-freeze';
 export { getDummyData } from './dummy-data';
-export { queryParser } from './query-parser';
+export { deepFreeze } from './lodash-like';
+export { objectQuery } from './objectQuery';

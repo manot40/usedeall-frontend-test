@@ -1,43 +1,41 @@
-import type { NextApiRequest } from 'next';
-
 import has from 'lodash/has';
 import get from 'lodash/get';
 
-export function queryParser<T = {}>(req: NextApiRequest, data: Readonly<T[]> | T[]) {
+export function objectQuery<T = {}>(query: Partial<Record<string, string | string[]>>, data: Readonly<T[]> | T[]) {
   let result = [...data],
     pagination: Pagination = {};
 
-  let q = req.query.q,
-    _start = req.query._start as string | number,
-    _end = req.query._end as string | number,
-    _page = req.query._page as string | number,
-    _sort = req.query._sort as string,
-    _order = req.query._order as string,
-    _limit = req.query._limit as string | number,
-    _select = req.query._select as string;
+  let q = query.q,
+    _start = query._start as string | number,
+    _end = query._end as string | number,
+    _page = query._page as string | number,
+    _sort = query._sort as string,
+    _order = query._order as string,
+    _limit = query._limit as string | number,
+    _select = query._select as string;
 
-  // Remove q, _start, _end, ...etc from req.query
+  // Remove q, _start, _end, ...etc from query
   // To avoid filtering using those parameter
-  delete req.query.q;
-  delete req.query._start;
-  delete req.query._end;
-  delete req.query._sort;
-  delete req.query._order;
-  delete req.query._limit;
+  delete query.q;
+  delete query._start;
+  delete query._end;
+  delete query._sort;
+  delete query._order;
+  delete query._limit;
 
-  Object.keys(req.query).forEach((query) => {
+  Object.keys(query).forEach((qVal) => {
     for (const i in result) {
       if (
-        has(result[i], query) ||
-        query === '_' ||
-        /_lte$/.test(query) ||
-        /_gte$/.test(query) ||
-        /_ne$/.test(query) ||
-        /_like$/.test(query)
+        has(result[i], qVal) ||
+        qVal === '_' ||
+        /_lte$/.test(qVal) ||
+        /_gte$/.test(qVal) ||
+        /_ne$/.test(qVal) ||
+        /_like$/.test(qVal)
       )
         return;
     }
-    delete req.query[query];
+    delete query[qVal];
   });
 
   // Full-text search by combining all values
@@ -57,13 +55,13 @@ export function queryParser<T = {}>(req: NextApiRequest, data: Readonly<T[]> | T
     });
   }
 
-  Object.keys(req.query).forEach((key) => {
+  Object.keys(query).forEach((key) => {
     if (key !== 'callback' && key !== '_') {
       const arr = (() => {
-        const query = req.query[key];
-        if (!query) return [];
-        if (Array.isArray(query)) return query;
-        return [query];
+        const qVal = query[key];
+        if (!qVal) return [];
+        if (Array.isArray(qVal)) return qVal;
+        return [qVal];
       })();
 
       const isDifferent = /_ne$/.test(key);
@@ -152,7 +150,7 @@ export function queryParser<T = {}>(req: NextApiRequest, data: Readonly<T[]> | T
     });
   }
 
-  if (Object.keys(pagination).length) return { result, meta: pagination };
+  if (Object.keys(pagination).length) return { result, pagination };
   return { result };
 }
 
