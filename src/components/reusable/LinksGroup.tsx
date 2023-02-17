@@ -1,19 +1,36 @@
 import { useState } from 'react';
 
 import Link from 'next/link';
-import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, createStyles } from '@mantine/core';
+import {
+  Box,
+  Text,
+  Group,
+  Collapse,
+  ThemeIcon,
+  UnstyledButton,
+  createStyles,
+  type UnstyledButtonProps,
+} from '@mantine/core';
 
 import { type Icon as TablerIcon, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
-export type LinksGroupProps = {
+type Links = Array<{
+  label: string;
+  link: string;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+}>;
+
+export type LinksGroupOptions = {
   icon: TablerIcon;
   label: string;
-  links?: { label: string; link: string }[];
+  links?: Links;
   active?: boolean;
   initiallyOpened?: boolean;
 };
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links, active = false }: LinksGroupProps) {
+type LinksGroupProps = LinksGroupOptions & UnstyledButtonProps & React.BaseHTMLAttributes<HTMLButtonElement>;
+
+export function LinksGroup({ icon: Icon, label, initiallyOpened, links, active = false, ...rest }: LinksGroupProps) {
   const { classes, theme } = useStyles();
   const [opened, setOpened] = useState(initiallyOpened || false);
 
@@ -22,21 +39,21 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, active =
 
   const LinkWrap = isSingleLink ? Link : 'div';
   const ChevronIcon = theme.dir === 'ltr' ? IconChevronRight : IconChevronLeft;
-  const Items = (hasLinks ? links : []).map((link) => (
-    <Text<'a'>
-      component="a"
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </Text>
+  const Items = (hasLinks ? links : []).map((l) => (
+    <Link key={l.label} href={l.link}>
+      <Text className={classes.link} onClick={l.onClick}>
+        {l.label}
+      </Text>
+    </Link>
   ));
 
   return (
     <LinkWrap href={isSingleLink ? links![0].link : ''} style={{ textDecorationLine: 'none' }}>
-      <UnstyledButton onClick={() => setOpened((o) => !o)} className={`${classes.control}${active ? ' active' : ''}`}>
+      <UnstyledButton
+        {...rest}
+        onClick={(e) => (rest.onClick?.(e), setOpened((o) => !o))}
+        className={`${classes.control}${active ? ' active' : ''} ${rest.className || ''}`}
+      >
         <Group position="apart" spacing={0}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <ThemeIcon variant="light" size={30}>

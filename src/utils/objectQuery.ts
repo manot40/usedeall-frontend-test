@@ -3,7 +3,7 @@ import get from 'lodash/get';
 
 export function objectQuery<T = {}>(query: Partial<Record<string, string | string[]>>, data: Readonly<T[]> | T[]) {
   let result = [...data],
-    pagination: Pagination = {};
+    pagination = {} as Pagination;
 
   let q = query.q,
     _start = query._start as string | number,
@@ -25,15 +25,7 @@ export function objectQuery<T = {}>(query: Partial<Record<string, string | strin
 
   Object.keys(query).forEach((qVal) => {
     for (const i in result) {
-      if (
-        has(result[i], qVal) ||
-        qVal === '_' ||
-        /_lte$/.test(qVal) ||
-        /_gte$/.test(qVal) ||
-        /_ne$/.test(qVal) ||
-        /_like$/.test(qVal)
-      )
-        return;
+      if (has(result[i], qVal) || qVal === '_' || /(_lte|_gte|_ne|_like|_in)$/.test(qVal)) return;
     }
     delete query[qVal];
   });
@@ -47,9 +39,7 @@ export function objectQuery<T = {}>(query: Partial<Record<string, string | strin
     result = result.filter((item) => {
       let vals = '';
       for (const key in item) {
-        if (typeof item[key] === 'string' || typeof item[key] === 'number') {
-          vals += item[key] + ' ';
-        }
+        if (typeof item[key] === 'string') vals += item[key];
       }
       return new RegExp(q as string, 'gi').test(vals);
     });
@@ -59,7 +49,7 @@ export function objectQuery<T = {}>(query: Partial<Record<string, string | strin
     if (key !== 'callback' && key !== '_') {
       const arr = (() => {
         const qVal = query[key];
-        if (!qVal) return [];
+        if (!qVal) return [''];
         if (Array.isArray(qVal)) return qVal;
         return [qVal];
       })();
@@ -67,15 +57,16 @@ export function objectQuery<T = {}>(query: Partial<Record<string, string | strin
       const isDifferent = /_ne$/.test(key);
       const isRange = /_lte$/.test(key) || /_gte$/.test(key);
       const isLike = /_like$/.test(key);
-      const path = key.replace(/(_lte|_gte|_ne|_like)$/, '');
+      const isIn = /_in$/.test(key);
+      const path = key.replace(/(_lte|_gte|_ne|_like|_in)$/, '');
 
       result = result.filter((element) => {
         return arr
           .map(function (value) {
+            if (value === '') return true;
             // get item value based on path
             // i.e post.title -> 'foo'
             const elementValue = get(element, path);
-
             // Prevent toString() failing on undefined or null values
             if (elementValue === undefined || elementValue === null) return undefined;
 
@@ -86,6 +77,8 @@ export function objectQuery<T = {}>(query: Partial<Record<string, string | strin
               return value !== elementValue.toString();
             } else if (isLike) {
               return new RegExp(value, 'i').test(elementValue.toString());
+            } else if (isIn) {
+              return value.split(',').includes(elementValue.toString());
             } else {
               return value === elementValue.toString();
             }
@@ -117,7 +110,7 @@ export function objectQuery<T = {}>(query: Partial<Record<string, string | strin
 
   // Slice result
   if (_end || _limit || _page) {
-    pagination = {};
+    pagination = {} as Pagination;
     pagination.totalCount = result.length;
   }
 
@@ -155,6 +148,6 @@ export function objectQuery<T = {}>(query: Partial<Record<string, string | strin
 }
 
 type Pagination = {
-  totalCount?: number;
-  totalPage?: number;
+  totalCount: number;
+  totalPage: number;
 };

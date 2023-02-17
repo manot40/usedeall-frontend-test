@@ -1,11 +1,11 @@
 import { memo } from 'react';
 
-import { LinksGroup, type LinksGroupProps } from '@/components/reusable';
+import { LinksGroup, type LinksGroupOptions } from '@/components/reusable';
 import { Navbar, Group, Text, ScrollArea, createStyles, Box } from '@mantine/core';
 import { useRouter } from 'next/router';
 
 type AdminNavProps = {
-  data: LinksGroupProps[];
+  data: LinksGroupOptions[];
   header?: React.ReactNode;
   opened?: boolean;
   onChange?: (opened: boolean) => void;
@@ -16,7 +16,12 @@ const Sidebar = ({ data, header, opened = false, onChange }: AdminNavProps) => {
   const { pathname } = useRouter();
 
   const Links = data.map((item) => (
-    <LinksGroup {...item} active={parsePath(pathname) == item.label.toLowerCase()} key={item.label} />
+    <LinksGroup
+      {...item}
+      key={item.label}
+      onClick={() => onChange?.(!opened)}
+      active={parsePath(pathname) == item.label.toLowerCase()}
+    />
   ));
 
   return (
@@ -42,8 +47,8 @@ const parsePath = (path: string) => {
 
 const useStyles = createStyles((theme) => ({
   sidebar: {
-    left: -300,
-    width: 300,
+    left: -260,
+    width: 260,
     zIndex: 99,
     position: 'fixed',
     paddingBottom: 0,

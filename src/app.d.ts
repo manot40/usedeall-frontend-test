@@ -1,3 +1,20 @@
+type Res<T = {} | {}[]> = {
+  success: boolean;
+  message?: string;
+  result?: T;
+  pagination?: {
+    totalCount: number;
+    totalPage: number;
+  };
+};
+
+type BaseQuery<T extends {}> = {
+  _page: number;
+  _sort: keyof T;
+  _order: '' | 'asc' | 'desc';
+  _limit: number;
+};
+
 type Address = {
   address: string;
   city: string;

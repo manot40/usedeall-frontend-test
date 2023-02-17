@@ -137,7 +137,7 @@ function getNestedValue<T>(obj: T, path: keyof T) {
 const useStyles = createStyles((theme) => ({
   thead: {
     'tr th': {
-      backgroundColor: theme.colors.gray[1],
+      backgroundColor: theme.colors.gray[2],
       borderBottom: 'transparent !important',
       ':first-of-type': {
         borderTopLeftRadius: theme.radius.md,

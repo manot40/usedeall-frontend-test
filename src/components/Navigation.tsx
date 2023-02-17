@@ -37,7 +37,7 @@ const useStyles = createStyles((theme) => ({
     padding: theme.spacing.md,
     borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]}`,
     [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
-      width: 'calc(100vw - 300px)',
+      width: 'calc(100vw - 260px)',
     },
   },
 
