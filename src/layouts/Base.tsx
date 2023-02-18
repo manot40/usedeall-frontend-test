@@ -1,10 +1,7 @@
 import { Box, Container, Flex } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
-
-import Sidebar from '@/components/Sidebar';
-import Navigation from '@/components/Navigation';
-
+import { NavBar, SideBar } from '@/components/Navigation';
 import { IconBox, IconGauge, IconShoppingCart } from '@tabler/icons-react';
 
 const BaseLayout = ({ children }: { children: React.ReactNode }) => {
@@ -12,10 +9,10 @@ const BaseLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Flex>
-      <Sidebar opened={isOpen} onChange={handler.toggle} data={mockData} />
+      <SideBar opened={isOpen} onChange={handler.toggle} data={mockData} />
       <Box>
-        <Navigation opened={isOpen} onChange={handler.toggle} />
-        <Container fluid py="md">
+        <NavBar opened={isOpen} onChange={handler.toggle} />
+        <Container fluid maw="100vw" py="md">
           {children}
         </Container>
       </Box>

@@ -39,9 +39,17 @@ type Product = {
 
 type Cart = {
   id: number;
+  user?: Pick<User, 'id' | 'firstName' | 'lastName' | 'maidenName' | 'image' | 'email' | 'phone'>;
+  userId: number;
+  total: number;
+  addedOn: string;
+  totalProducts: number;
+  totalQuantity: number;
+  discountedTotal: number;
   products: (Pick<Product, 'id' | 'title' | 'price' | 'discountPercentage'> & {
+    total: number;
     quantity: number;
-    discountPrice: number;
+    discountedPrice: number;
   })[];
 };
 

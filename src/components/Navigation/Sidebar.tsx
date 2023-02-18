@@ -11,7 +11,7 @@ type AdminNavProps = {
   onChange?: (opened: boolean) => void;
 };
 
-const Sidebar = ({ data, header, opened = false, onChange }: AdminNavProps) => {
+const NavSidebar = ({ data, header, opened = false, onChange }: AdminNavProps) => {
   const { classes } = useStyles();
   const { pathname } = useRouter();
 
@@ -28,7 +28,16 @@ const Sidebar = ({ data, header, opened = false, onChange }: AdminNavProps) => {
     <>
       <Navbar height="100vh" p="md" className={classes.sidebar} style={{ left: opened ? 0 : undefined }}>
         <Navbar.Section className={classes.header}>
-          <Group position="apart">{header || <Text weight={600}>SuperAdmin</Text>}</Group>
+          <Group position="apart">
+            {header || (
+              <Text weight={700} style={{ userSelect: 'none' }}>
+                SUPER{' '}
+                <Text component="span" weight={500}>
+                  ADMIN
+                </Text>
+              </Text>
+            )}
+          </Group>
         </Navbar.Section>
 
         <Navbar.Section grow className={classes.links} component={ScrollArea}>
@@ -47,6 +56,7 @@ const parsePath = (path: string) => {
 
 const useStyles = createStyles((theme) => ({
   sidebar: {
+    top: 0,
     left: -260,
     width: 260,
     zIndex: 99,
@@ -100,4 +110,4 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default memo(Sidebar);
+export default memo(NavSidebar);

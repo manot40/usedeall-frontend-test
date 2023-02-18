@@ -1,18 +1,22 @@
 import { Box, Burger, createStyles, Flex, Navbar } from '@mantine/core';
+import NavBreadcrumbs, { useBreadcrumbs } from '@/components/Navigation/Breadcrumbs';
 
 type NavigationProps = {
   opened?: boolean;
   onChange?: (opened: boolean) => void;
 };
 
-const Navigation = ({ opened = false, onChange }: NavigationProps) => {
+const NavBar = ({ opened = false, onChange }: NavigationProps) => {
   const { classes } = useStyles();
+  const { push } = useBreadcrumbs();
 
   return (
     <Navbar className={classes.navbar} height="auto">
       <Navbar.Section className={classes.header}>
-        <Flex align="center" justify="space-between">
-          <div style={{ fontWeight: 600 }}>Dashboard</div>
+        <Flex align="center" justify="space-between" onClick={() => push(Math.random().toFixed(2))}>
+          <Box style={{ fontWeight: 600 }} py={4}>
+            <NavBreadcrumbs />
+          </Box>
           <Box
             sx={(th) => ({
               zIndex: 99,
@@ -46,4 +50,4 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default Navigation;
+export default NavBar;

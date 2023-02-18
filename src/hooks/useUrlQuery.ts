@@ -2,10 +2,17 @@ import { useCallback, useReducer } from 'react';
 
 type Query<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-type Reducer<T, K extends keyof T> = [mutator: Partial<T> | ((prev: Query<T, K>) => Query<T, K>), persistAll?: boolean];
+type Reducer<T, K extends keyof T> = {
+  mutator: Partial<T> | ((prev: Query<T, K>) => Query<T, K>);
+  persistAll?: boolean;
+};
 
-export const useUrlQuery = <T, K extends keyof T>(initialState: Query<T, K>, optionalQuery: K[] = []) => {
-  const [query, _setQuery] = useReducer((prev: Query<T, K>, [mutator, persistAll = false]: Reducer<T, K>) => {
+export const useUrlQuery = <T, K extends keyof T>(
+  initialState: Query<T, K>,
+  optionalQuery: K[] = [],
+  cb?: (q: Query<T, K>) => void
+) => {
+  const [query, _setQuery] = useReducer((prev: Query<T, K>, { mutator, persistAll = false }: Reducer<T, K>) => {
     let oldData: Query<T, K> = prev;
     const newData = typeof mutator === 'function' ? mutator(prev) : mutator;
 
@@ -18,11 +25,13 @@ export const useUrlQuery = <T, K extends keyof T>(initialState: Query<T, K>, opt
       }, {} as T);
     }
 
-    return { ...oldData, ...newData };
+    const result = { ...oldData, ...newData };
+    if (cb) cb(result);
+    return result;
   }, initialState);
 
   const setQuery = useCallback(
-    (mutator: Reducer<T, K>[0], persistAll?: boolean) => _setQuery([mutator, persistAll]),
+    (mutator: Reducer<T, K>['mutator'], opt?: Omit<Reducer<T, K>, 'mutator'>) => _setQuery({ mutator, ...opt }),
     []
   );
 
