@@ -1,4 +1,4 @@
-import { Box, Container, Flex } from '@mantine/core';
+import { Box, Flex } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
 import { NavBar, SideBar } from '@/components/Navigation';
@@ -8,14 +8,16 @@ const BaseLayout = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, handler] = useDisclosure(false);
 
   return (
-    <Flex>
-      <SideBar opened={isOpen} onChange={handler.toggle} data={mockData} />
-      <Box>
+    <Flex h="100%">
+      <SideBar opened={isOpen} onChange={handler.close} data={mockData} />
+      <Flex direction="column" w="100%" h="100vh" sx={{ overflowX: 'hidden', flex: '1 1 0%' }}>
         <NavBar opened={isOpen} onChange={handler.toggle} />
-        <Container fluid maw="100vw" py="md">
-          {children}
-        </Container>
-      </Box>
+        <Flex h="100%" mah="100vh" sx={{ overflowY: 'auto' }}>
+          <Box w="100%" p="md">
+            {children}
+          </Box>
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

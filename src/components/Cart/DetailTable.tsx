@@ -16,13 +16,7 @@ const CartDetailTable: React.FC<CartDetailTableProps> = ({ data }) => {
       <Text weight={600} ml={4} size={14}>
         Product List
       </Text>
-      <AutoTable
-        data={data}
-        columns={cols}
-        useScroll={xs}
-        verticalSpacing="sm"
-        wrapperProps={{ style: { userSelect: 'none' } }}
-      />
+      <AutoTable data={data} columns={cols} useScroll={xs} verticalSpacing="sm" />
     </Stack>
   );
 };

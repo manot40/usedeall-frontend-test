@@ -5,7 +5,7 @@ import { useUrlQuery } from '@/hooks';
 import { fetcher, qsFormat } from '@/utils';
 
 import { Result } from '@/components/reusable';
-import { Box, Stack, Card } from '@mantine/core';
+import { Stack, Card } from '@mantine/core';
 import { ProductTable, Searchbar } from '@/components/Product';
 
 export default function Products() {
@@ -19,24 +19,22 @@ export default function Products() {
   }, []);
 
   return (
-    <Box maw="100vw">
-      <Stack spacing="md">
-        <Searchbar query={query as Record<string, string>} onChange={setQuery} />
-        {error ? (
-          <Card withBorder py={120}>
-            <Result />
-          </Card>
-        ) : (
-          <ProductTable
-            data={data?.result}
-            query={query as BaseQuery<Product>}
-            totalCount={data?.pagination?.totalCount || 1}
-            onSortChange={(sort) => setQuery(sort, { persistAll: true })}
-            onPageChange={(_page) => setQuery({ _page }, { persistAll: true })}
-          />
-        )}
-      </Stack>
-    </Box>
+    <Stack spacing="md">
+      <Searchbar query={query as Record<string, string>} onChange={setQuery} />
+      {error ? (
+        <Card withBorder py={120}>
+          <Result />
+        </Card>
+      ) : (
+        <ProductTable
+          data={data?.result}
+          query={query as BaseQuery<Product>}
+          totalCount={data?.pagination?.totalCount || 1}
+          onSortChange={(sort) => setQuery(sort, { persistAll: true })}
+          onPageChange={(_page) => setQuery({ _page }, { persistAll: true })}
+        />
+      )}
+    </Stack>
   );
 }
 

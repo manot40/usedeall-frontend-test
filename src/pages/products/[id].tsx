@@ -6,17 +6,17 @@ import { useBreadcrumbs } from '@/components/Navigation/Breadcrumbs';
 
 import { Result } from '@/components/reusable';
 import { Box, LoadingOverlay, Stack } from '@mantine/core';
-import { DetailOverview, DetailTable } from '@/components/Cart';
 
-export default function CartDetail() {
+export default function ProductDetail() {
   const { query } = useRouter();
   const { push } = useBreadcrumbs();
-  const { data: cartRes, error } = useSWR<Res<Cart>>(`/api/cart/${query.id}`, fetcher.get);
+  const { data: productRes, error } = useSWR<Res<Product>>(`/api/product/${query.id}`, fetcher.get);
 
   useEffect(() => {
-    query?.id && push(`${query.id}`);
+    const title = productRes?.result!.title;
+    if (query?.id && title) push(title);
     // eslint-disable-next-line
-  }, [query.id]);
+  }, [query?.id, productRes?.result!.title]);
 
   if (error)
     return (
@@ -25,17 +25,12 @@ export default function CartDetail() {
       </Box>
     );
 
-  if (!cartRes)
+  if (!productRes)
     return (
       <Box sx={{ position: 'relative', width: '100%', height: '80vh' }}>
         <LoadingOverlay visible overlayColor="transparent" />
       </Box>
     );
 
-  return (
-    <Stack spacing="lg">
-      <DetailOverview data={cartRes.result!} />
-      <DetailTable data={cartRes.result!.products} />
-    </Stack>
-  );
+  return <Stack spacing="lg">Work In Progress</Stack>;
 }

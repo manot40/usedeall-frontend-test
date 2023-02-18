@@ -57,15 +57,18 @@ const parsePath = (path: string) => {
 const useStyles = createStyles((theme) => ({
   sidebar: {
     top: 0,
-    left: -260,
-    width: 260,
-    zIndex: 99,
+    left: -250,
+    width: 250,
+    height: '100%',
+    zIndex: 9999,
     position: 'fixed',
     paddingBottom: 0,
     transition: 'left 0.2s ease-in-out',
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
     [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
       position: 'inherit',
+      height: '100vh',
+      maxHeight: '100vh',
     },
   },
 
@@ -97,15 +100,16 @@ const useStyles = createStyles((theme) => ({
   overlay: {
     top: 0,
     left: 0,
-    zIndex: 98,
-    width: '100vw',
-    height: '100vh',
+    zIndex: 9998,
+    width: '100%',
+    height: '100%',
     position: 'fixed',
     background: 'rgba(0, 0, 0, 0.5)',
     animation: 'fade-in 0.2s ease-in-out',
 
     [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
       display: 'none',
+      height: '100vh',
     },
   },
 }));

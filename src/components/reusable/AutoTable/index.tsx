@@ -110,7 +110,7 @@ export const AutoTable = memo<AutoTableProps<any>>(function AutoTable({
           </Flex>
         )}
       </Wrapper>
-      {pagination && <Pagination mt={18} sx={{ alignSelf: 'center' }} {...pagination} total={pageTotal} />}
+      {pagination && <Pagination py={18} sx={{ alignSelf: 'center' }} {...pagination} total={pageTotal} />}
     </Flex>
   );
 });

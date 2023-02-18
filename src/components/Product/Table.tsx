@@ -1,10 +1,11 @@
 import type { ColumnSort } from '@/components/reusable/AutoTable/table';
 
+import Link from 'next/link';
 import { memo } from 'react';
 import { useViewport } from '@/hooks';
 
 import { prettyString } from '../../utils';
-import { Avatar, Badge, Flex, Group, Text, Tooltip } from '@mantine/core';
+import { Avatar, Badge, Flex, Group, Stack, Text, Tooltip } from '@mantine/core';
 import { AutoTable, type TableColumns } from '../reusable';
 
 type ProductSort = Pick<BaseQuery<Product>, '_order' | '_sort'>;
@@ -44,33 +45,31 @@ const cols: TableColumns<Product> = [
     dataKey: 'title',
     title: 'Product Name',
     style: { width: '50%' },
-    render: (type, { id, description, thumbnail }) => (
-      <Flex gap={12} align="center">
-        <Avatar src={thumbnail} />
-        <Tooltip openDelay={300} width={220} position="right" label={description} arrowSize={8} multiline withArrow>
-          <Text maw="fit-content" weight={500}>
-            {prettyString(type)}
-          </Text>
-        </Tooltip>
-      </Flex>
+    render: (type, { id, description, thumbnail, brand }) => (
+      <Link href={`/products/${id}`}>
+        <Flex gap={12} align="center">
+          <Avatar src={thumbnail} />
+          <Tooltip openDelay={300} width={220} position="right" label={description} arrowSize={8} multiline withArrow>
+            <Stack spacing={2}>
+              <Text maw="fit-content" weight={500}>
+                {prettyString(type)}
+              </Text>
+              <Text size={12} color="#777" weight={600}>
+                {brand}
+              </Text>
+            </Stack>
+          </Tooltip>
+        </Flex>
+      </Link>
     ),
   },
   {
     dataKey: 'category',
     title: 'Category',
     render: (type) => (
-      <Badge size="sm" color="gray">
+      <Badge size="sm" variant="dot">
         {prettyString(type)}
       </Badge>
-    ),
-  },
-  {
-    dataKey: 'brand',
-    title: 'Brand',
-    render: (type) => (
-      <Group noWrap spacing="xs">
-        <Text weight={500}>{prettyString(type)}</Text>
-      </Group>
     ),
   },
   {

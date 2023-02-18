@@ -12,20 +12,11 @@ const NavBar = ({ opened = false, onChange }: NavigationProps) => {
     <Navbar className={classes.navbar} height="auto">
       <Navbar.Section className={classes.header}>
         <Flex align="center" justify="space-between">
-          <Box style={{ fontWeight: 600 }} py={4}>
+          <Box py={4}>
             <NavBreadcrumbs />
           </Box>
-          <Box
-            sx={(th) => ({
-              zIndex: 99,
-              display: 'block',
-              position: 'relative',
-              [`@media (min-width: ${th.breakpoints.sm}px)`]: {
-                display: 'none',
-              },
-            })}
-          >
-            <Burger color={opened ? '#F2F2F2' : undefined} opened={opened} onClick={() => onChange?.(!opened)} />
+          <Box sx={(th) => ({ [`@media (min-width: ${th.breakpoints.sm}px)`]: { display: 'none' } })}>
+            <Burger opened={opened} onClick={() => onChange?.(!opened)} />
           </Box>
         </Flex>
       </Navbar.Section>
@@ -35,12 +26,10 @@ const NavBar = ({ opened = false, onChange }: NavigationProps) => {
 
 const useStyles = createStyles((theme) => ({
   navbar: {
-    width: '100vw',
-    padding: theme.spacing.md,
+    display: 'flex',
+    padding: `calc(${theme.spacing.sm}px - 1px)`,
     borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]}`,
-    [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
-      width: 'calc(100vw - 260px)',
-    },
+    [`@media (min-width: ${theme.breakpoints.sm}px)`]: { padding: theme.spacing.md },
   },
 
   header: {
