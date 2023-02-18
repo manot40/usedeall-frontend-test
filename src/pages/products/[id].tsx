@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useBreadcrumbs } from '@/components/Navigation/Breadcrumbs';
 
+import Head from 'next/head';
 import { Result } from '@/components/reusable';
 import { Box, LoadingOverlay, Stack } from '@mantine/core';
 
@@ -32,5 +33,12 @@ export default function ProductDetail() {
       </Box>
     );
 
-  return <Stack spacing="lg">Work In Progress</Stack>;
+  return (
+    <Stack spacing="lg">
+      <Head>
+        <title>{productRes.result!.title} - Simple E-Commerce</title>
+      </Head>
+      Work In Progress
+    </Stack>
+  );
 }

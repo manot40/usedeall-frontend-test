@@ -45,10 +45,10 @@ const cols: TableColumns<Product> = [
     dataKey: 'title',
     title: 'Product Name',
     style: { width: '50%' },
-    render: (type, { id, description, thumbnail, brand }) => (
+    render: (type, { id, description, thumbnail, brand, title }) => (
       <Link href={`/products/${id}`}>
         <Flex gap={12} align="center">
-          <Avatar src={thumbnail} />
+          <Avatar src={thumbnail} alt={title} />
           <Tooltip openDelay={300} width={220} position="right" label={description} arrowSize={8} multiline withArrow>
             <Stack spacing={2}>
               <Text maw="fit-content" weight={500}>

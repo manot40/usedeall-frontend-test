@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useUrlQuery } from '@/hooks';
 import { fetcher, qsFormat } from '@/utils';
 
+import Head from 'next/head';
 import { Result } from '@/components/reusable';
 import { Stack, Card } from '@mantine/core';
 import { ProductTable, Searchbar } from '@/components/Product';
@@ -20,6 +21,9 @@ export default function Products() {
 
   return (
     <Stack spacing="md">
+      <Head>
+        <title>Products - Simple E-Commerce</title>
+      </Head>
       <Searchbar query={query as Record<string, string>} onChange={setQuery} />
       {error ? (
         <Card withBorder py={120}>

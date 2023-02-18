@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import Head from 'next/head';
 
 import { useUrlQuery } from '@/hooks';
 import { fetcher, qsFormat } from '@/utils';
@@ -12,6 +13,9 @@ export default function Cart() {
   const { data, error } = useSWR<Res<Cart[]>>(`/api/cart?${qsFormat(query)}`, fetcher.get);
   return (
     <Box>
+      <Head>
+        <title>Cart - Simple E-Commerce</title>
+      </Head>
       {error ? (
         <Card withBorder py={120}>
           <Result />

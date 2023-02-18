@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useBreadcrumbs } from '@/components/Navigation/Breadcrumbs';
 
+import Head from 'next/head';
 import { Result } from '@/components/reusable';
 import { Box, LoadingOverlay, Stack } from '@mantine/core';
 import { DetailOverview, DetailTable } from '@/components/Cart';
@@ -34,6 +35,9 @@ export default function CartDetail() {
 
   return (
     <Stack spacing="lg">
+      <Head>
+        <title>Cart {cartRes.result!.id} - Simple E-Commerce</title>
+      </Head>
       <DetailOverview data={cartRes.result!} />
       <DetailTable data={cartRes.result!.products} />
     </Stack>
