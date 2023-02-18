@@ -27,9 +27,9 @@ const NavBar = ({ opened = false, onChange }: NavigationProps) => {
 const useStyles = createStyles((theme) => ({
   navbar: {
     display: 'flex',
-    padding: 16.5,
+    padding: `calc(${theme.spacing.xs}px + 1.5px)`,
     borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]}`,
-    [`@media (min-width: ${theme.breakpoints.sm}px)`]: { padding: theme.spacing.md },
+    [`@media (min-width: ${theme.breakpoints.sm}px)`]: { padding: theme.spacing.md + 0.5 },
   },
 
   header: {
