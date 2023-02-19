@@ -52,6 +52,6 @@ const QS: QueryType = {
   category_in: '',
 };
 
-const OPTIONAL_QS = [] satisfies QueryType[];
+const OPTIONAL_QS = ['_gte', '_lte'] as (keyof QueryType)[];
 
 export type QueryType = BaseQuery<Product> & Record<string, string | number>;

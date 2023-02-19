@@ -21,7 +21,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ query, onChange }) => {
   return (
     <div style={{ alignSelf: xs ? 'normal' : 'flex-start' }}>
       <Flex direction={xs ? 'column' : 'row'} gap="xs">
-        <Search autoComplete="off" value={query?.q} onChange={(q) => onChange({ q, _page: 1 })} />
+        <Search autoComplete="off" value={query?.q} onChange={onChange} />
         <SimpleGrid cols={2} spacing="xs">
           <Filter
             context="category"

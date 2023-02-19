@@ -17,10 +17,10 @@ export const useUrlQuery = <T, K extends keyof T>(
     const newData = typeof mutator === 'function' ? mutator(prev) : mutator;
 
     if (!persistAll && optionalQuery.length) {
-      oldData = Object.entries(oldData).reduce((acc, [_key]) => {
+      oldData = Object.keys(oldData).reduce((acc, _key) => {
         const key = _key as K;
-        if (optionalQuery.includes(key)) oldData[key] = undefined as any;
-        else acc[key] = oldData[key] as T[K];
+        if (optionalQuery.findIndex((p) => key.toString().includes(p.toString())) == -1)
+          acc[key] = oldData[key] as T[K];
         return acc;
       }, {} as T);
     }

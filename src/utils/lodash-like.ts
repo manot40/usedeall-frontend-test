@@ -14,3 +14,10 @@ export function prettyString(sentence: string) {
     .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLocaleLowerCase())
     .join(' ');
 }
+
+export function pickTop<T extends { value: number }>(data: T[], limit = 10) {
+  const _data = [...data].sort((a, b) => b.value - a.value);
+  const topTen = _data.splice(0, limit);
+  const others = _data.reduce((acc, curr) => acc + curr.value, 0);
+  return [...topTen, { label: 'Others', value: others }];
+}
