@@ -8,7 +8,13 @@ type Res<T = {} | {}[]> = {
   };
 };
 
+type ProductChartData = {
+  byCategory: { label: string; value: number }[];
+  byBrand: { label: string; value: number }[];
+};
+
 type BaseQuery<T extends {}> = {
+  q?: string;
   _page: number;
   _sort: keyof T;
   _order: '' | 'asc' | 'desc';
